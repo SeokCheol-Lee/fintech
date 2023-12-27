@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 
 @Entity
@@ -28,4 +29,13 @@ public class UserInfo {
 
     @Column(name = "usr_icm_amt")
     private Long userIncomeAmount;
+
+    @Builder
+    public UserInfo(String userKey, String userRegistrationNumber, String userName
+        , Long userIncomeAmount){
+        this.userKey = userKey;
+        this.userRegistrationNumber = userRegistrationNumber;
+        this.userName = userName;
+        this.userIncomeAmount = userIncomeAmount;
+    }
 }
