@@ -13,6 +13,7 @@ public class LoanReviewDto {
     }
 
     @Builder
+    @Getter
     static class LoanResult{
         private Long userLimitAmount;
         private Double userLoanInterest;
