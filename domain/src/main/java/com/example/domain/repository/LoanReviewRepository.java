@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LoanReviewRepository extends JpaRepository<LoanReview, Long> {
-
+    LoanReview findByUserKey(String userKey);
 }
