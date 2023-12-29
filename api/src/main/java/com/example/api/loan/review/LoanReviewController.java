@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/fintech/api/v1")
-public class LoanreviewController {
+public class LoanReviewController {
 
     private final LoanReviewServiceImpl loanReviewService;
 

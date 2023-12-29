@@ -1,5 +1,7 @@
 package com.example.api.loan.review;
 
+import com.example.api.exception.CustomException;
+import com.example.api.exception.ErrorCode;
 import com.example.api.loan.review.LoanReviewDto.LoanResult;
 import com.example.api.loan.review.LoanReviewDto.LoanReviewResponseDto;
 import com.example.domain.domain.LoanReview;
@@ -28,7 +30,8 @@ public class LoanReviewServiceImpl implements LoanReviewService{
 
     @Override
     public LoanReviewDto.LoanReview getLoanResult(String userKey) {
-        LoanReview loanReview = loanReviewRepository.findByUserKey(userKey);
+        LoanReview loanReview = loanReviewRepository.findByUserKey(userKey)
+            .orElseThrow(() -> new CustomException(ErrorCode.RESULT_NOT_FOUND));
         return LoanReviewDto.LoanReview.builder()
             .userKey(loanReview.getUserKey())
             .loanLimitedAmount(loanReview.getLoanLimitedAmount())
