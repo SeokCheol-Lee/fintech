@@ -6,6 +6,9 @@ import com.example.api.loan.request.LoanRequestDto.LoanRequestInputDto;
 import com.example.api.loan.request.LoanRequestDto.LoanRequestResponseDto;
 import com.example.domain.domain.UserInfo;
 import com.example.domain.repository.UserInfoRepository;
+import com.example.kafka.KafkaTopic;
+import com.example.kafka.producer.LoanRequestSender;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -23,15 +26,20 @@ public class LoanRequestServiceImpl implements LoanRequestService{
     private final UserInfoRepository userInfoRepository;
     private final GenerateKey generateKey;
     private final EncryptComponent encryptComponent;
+    private final LoanRequestSender loanRequestSender;
 
     @Override
     public LoanRequestResponseDto loanRequestMain(LoanRequestInputDto loanRequestInputDto)
         throws InvalidAlgorithmParameterException, NoSuchPaddingException, UnsupportedEncodingException
-        , IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        , IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException
+        , InvalidKeyException, JsonProcessingException {
+
         String userKey = generateKey.generateUserKey();
-        loanRequestInputDto.setUserRegistrationNumber(encryptComponent.encryptString(loanRequestInputDto.getUserRegistrationNumber()));
-        saveUserInfo(loanRequestInputDto.toUserInfoDto(userKey));
-        loanRequestReview("");
+        loanRequestInputDto.setUserRegistrationNumber(encryptComponent
+            .encryptString(loanRequestInputDto.getUserRegistrationNumber()));
+        UserInfoDto userInfoDto = loanRequestInputDto.toUserInfoDto(userKey);
+        saveUserInfo(userInfoDto);
+        loanRequestReview(userInfoDto);
         return new LoanRequestResponseDto(userKey);
     }
 
@@ -41,7 +49,10 @@ public class LoanRequestServiceImpl implements LoanRequestService{
     }
 
     @Override
-    public void loanRequestReview(String userKey) {
-
+    public void loanRequestReview(UserInfoDto userInfoDto) throws JsonProcessingException {
+        loanRequestSender.sendMessage(
+            KafkaTopic.LOAN_REQUEST,
+            userInfoDto.toLoanRequestKafkaDto()
+        );
     }
 }

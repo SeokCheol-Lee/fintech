@@ -1,4 +1,5 @@
 rootProject.name = 'fintech'
 include 'domain'
 include 'api'
+include 'kafka'
 

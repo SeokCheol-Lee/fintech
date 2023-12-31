@@ -1,5 +1,6 @@
 package com.example.api.loan.request;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -25,7 +26,8 @@ public class LoanRequestController {
     public ResponseEntity<LoanRequestDto.LoanRequestResponseDto> loanRequest(
         @RequestBody LoanRequestDto.LoanRequestInputDto loanRequestInputDto)
         throws InvalidAlgorithmParameterException, NoSuchPaddingException, UnsupportedEncodingException,
-        IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException
+        , InvalidKeyException, JsonProcessingException {
         return ResponseEntity.ok(loanRequestService.loanRequestMain(loanRequestInputDto));
     }
 }

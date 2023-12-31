@@ -1,10 +1,10 @@
 package com.example.api.aop;
 
+import java.util.Arrays;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.hibernate.mapping.Any;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -27,8 +27,8 @@ public class LogAspect {
 
         stopWatch.stop();
 
-        logger.info(joinPoint.getSignature().getName() + " " + joinPoint.getArgs()[0] + " "
-        + stopWatch.getLastTaskTimeMillis());
+        logger.info("Logging : {} {} {}", joinPoint.getSignature().getName(),
+            Arrays.toString(joinPoint.getArgs()), stopWatch.getTotalTimeSeconds());
 
         return result;
     }
