@@ -3,4 +3,5 @@ include 'domain'
 include 'api'
 include 'kafka'
 include 'consumer'
+include 'css'
 

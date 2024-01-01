@@ -1,5 +1,6 @@
 package com.example.consumer.kafka;
 
+import com.example.consumer.service.LoanRequestService;
 import com.example.kafka.dto.LoanRequestDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,10 +13,13 @@ import org.springframework.stereotype.Service;
 public class LoanRequestConsumer {
 
     private final ObjectMapper objectMapper;
+    private final LoanRequestService loanRequestService;
 
     @KafkaListener(topics = {"loan_request"}, groupId = "fintech")
     public void loanRequestTopicConsumer(String message) throws JsonProcessingException {
         LoanRequestDto loanRequestKafkaDto = objectMapper.readValue(message, LoanRequestDto.class);
+
+        loanRequestService.loanRequest(loanRequestKafkaDto);
     }
 
 }
