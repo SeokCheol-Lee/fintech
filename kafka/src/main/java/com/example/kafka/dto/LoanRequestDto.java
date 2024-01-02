@@ -10,7 +10,7 @@ import lombok.Getter;
 public class LoanRequestDto {
     private String userKey;
     private String userName;
-    private String userRegistrationNumber;
     private Long userIncomeAmount;
+    private String userRegistrationNumber;
 
 }

@@ -39,3 +39,33 @@ subprojects {
 		useJUnitPlatform()
 	}
 }
+bootJar {
+	enabled = false
+}
+jar {
+	enabled = true
+}
+
+project(":api"){
+	dependencies {
+		implementation(project(":kafka"))
+		implementation(project(":domain"))
+	}
+}
+
+project(":consumer"){
+	dependencies {
+		implementation(project(":kafka"))
+		implementation(project(":domain"))
+	}
+}
+
+project(":domain"){
+	tasks.bootJar { enabled = false }
+	tasks.jar { enabled = true }
+}
+
+project(":kafka"){
+	tasks.bootJar { enabled = false }
+	tasks.jar { enabled = true }
+}

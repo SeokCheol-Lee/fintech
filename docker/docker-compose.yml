@@ -4,6 +4,8 @@ services:
     image: wurstmeister/zookeeper
     ports:
       - "2181:2181"
+    networks:
+      - fintech
 
   kafka:
     image: wurstmeister/kafka:2.13-2.8.1
@@ -15,3 +17,41 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - fintech
+
+  api:
+    image: api:1.0.1
+    container_name: api
+    ports:
+      - "80:80"
+    networks:
+      - fintech
+
+  consumer:
+    image: consumer:1.0.1
+    container_name: consumer
+    ports:
+      - "8080:8080"
+    networks:
+      - fintech
+
+  css:
+    image: css:1.0.1
+    container_name: css
+    ports:
+      - "8081:8081"
+    networks:
+      - fintech
+
+  nginx:
+    image: nginx:1.0.1
+    container_name: nginx
+    ports:
+      - "8085:8085"
+    networks:
+      - fintech
+
+networks:
+  fintech:
+    driver: bridge
